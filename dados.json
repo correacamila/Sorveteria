@@ -1,22 +1,28 @@
 {
     "usuarios": [
-        {
-            "id": 1,
-            "nome": "Administrador",
-            "email": "admin.docedeneve@gmail.com",
-            "senha": "1234567890",
-            "adm": true,
-            "principal": true
-        },
-        {
-            "id": 6,
-            "nome": "Letícia César",
-            "email": "leticia.cesar@gmail.com",
-            "senha": "0987654321",
-            "adm": true,
-            "principal": false
-        }
-    ],
+    {
+        "id": 1,
+        "nome": "Administrador",
+        "email": "admin.docedeneve@gmail.com",
+        "senha": "1234567890",
+        "apelido": "Admin",
+        "foto": "avatar1.png",
+        "data_entrada": "08/09/2026",
+        "adm": true,
+        "principal": true
+    },
+    {
+        "id": 6,
+        "nome": "Letícia César",
+        "email": "leticia.cesar@gmail.com",
+        "senha": "0987654321",
+        "apelido": "Letícia",
+        "foto": "avatar2.png",
+        "data_entrada": "08/09/2026",
+        "adm": true,
+        "principal": false
+    }
+],
     "produtos": [
         {
             "id": 1,

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Financeiro - Administração{% endblock %}
+
+{% block content %}
+
+<section class="pagina-titulo">
+    <span class="tag">ADMINISTRAÇÃO</span>
+    <h1>Financeiro 💰</h1>
+    <p>Acompanhe as vendas e os gastos dos clientes.</p>
+</section>
+
+<section class="admin-tabela-section">
+
+    <div class="admin-titulo">
+        <span>👥</span>
+        <div>
+            <h2>Gastos por cliente</h2>
+            <p>Total gasto em pedidos entregues.</p>
+        </div>
+    </div>
+
+    <div class="admin-tabela">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nº</th>
+                    <th>Cliente</th>
+                    <th>Total gasto</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for cliente in gastos_clientes %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ cliente.nome }}</td>
+                    <td>R$ {{ "%.2f"|format(cliente.total) }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3">Nenhum cliente encontrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</section>
+
+<section class="admin-tabela-section">
+
+    <div class="admin-titulo">
+        <span>🍨</span>
+        <div>
+            <h2>Vendas por produto</h2>
+            <p>Quantidade e faturamento de cada produto.</p>
+        </div>
+    </div>
+
+    <div class="admin-tabela">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nº</th>
+                    <th>Produto</th>
+                    <th>Quantidade vendida</th>
+                    <th>Faturamento</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for produto in faturamento_produtos %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ produto.nome }}</td>
+                    <td>{{ produto.quantidade }}</td>
+                    <td>R$ {{ "%.2f"|format(produto.total) }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4">Nenhuma venda encontrada.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,21 +1,21 @@
 {% extends "base.html" %}
 {% block title %}Cardápio - Doce Neve{% endblock %}
-
 {% block content %}
+
 <section class="pagina-titulo">
     <span class="tag">NOSSO CARDÁPIO</span>
     <h1>Escolha seu sabor favorito 🍦</h1>
     <p>Temos opções para todos os gostos.</p>
 </section>
 
-<div class="filtros">
+<section class="filtros">
     <a href="{{ url_for('cardapio') }}" class="{% if categoria_atual == 'Todos' %}ativo{% endif %}">Todos</a>
     {% for categoria in categorias %}
-        <a href="{{ url_for('cardapio', categoria=categoria) }}" class="{% if categoria_atual == categoria %}ativo{% endif %}"> {{ categoria }} </a>
+        <a href="{{ url_for('cardapio', categoria=categoria) }}" class="{% if categoria_atual == categoria %}ativo{% endif %}">{{ categoria }}</a>
     {% endfor %}
-</div>
+</section>
 
-<div class="grade">
+<section class="grade">
     {% for produto in produtos %}
     <article class="card">
         <div class="icone-sorvete">🍨</div>
@@ -23,8 +23,9 @@
         <h3>{{ produto.nome }}</h3>
         <p>{{ produto.descricao }}</p>
         <div class="preco">R$ {{ "%.2f"|format(produto.preco) }}</div>
+
         {% if session.get("usuario") %}
-            <a class="botao pequeno" href="{{ url_for('novo_pedido') }}">Pedir agora</a>
+            <a class="botao pequeno" href="{{ url_for('novo_pedido', produto_id=produto.id) }}">Pedir agora</a>
         {% else %}
             <a class="botao pequeno" href="{{ url_for('login') }}">Entrar para pedir</a>
         {% endif %}
@@ -32,5 +33,6 @@
     {% else %}
         <p>Nenhum produto encontrado.</p>
     {% endfor %}
-</div>
+</section>
+
 {% endblock %}

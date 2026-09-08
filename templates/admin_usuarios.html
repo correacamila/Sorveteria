@@ -7,73 +7,113 @@
 <section class="pagina-titulo">
     <span class="tag">ADMINISTRAÇÃO</span>
     <h1>Gerenciar usuários</h1>
-    <p>Veja os usuários cadastrados e gerencie as permissões.</p>
+    <p>Gerencie clientes e administradores da Doce Neve.</p>
 </section>
 
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>E-mail</th>
-            <th>Tipo</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
+<section class="admin-tabela-section">
 
-    <tbody>
-        {% for usuario in usuarios %}
-        <tr>
-            <td>{{ usuario.id }}</td>
+    <div class="admin-titulo">
+        <span>👥</span>
+        <div>
+            <h2>Clientes</h2>
+            <p>Usuários que possuem acesso como clientes.</p>
+        </div>
+    </div>
 
-            <td>{{ usuario.nome }}</td>
+    <div class="admin-tabela">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nº</th>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
 
-            <td>{{ usuario.email }}</td>
+            <tbody>
+                {% for usuario in clientes %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ usuario.nome }}</td>
+                    <td>{{ usuario.email }}</td>
+                    <td class="acoes">
+                        <form action="{{ url_for('tornar_adm', id=usuario.id) }}" method="POST">
+                            <button class="botao pequeno" type="submit">Tornar ADM</button>
+                        </form>
 
-            <td>
-                {% if usuario.principal %}
-                    Administrador principal
-                {% elif usuario.adm %}
-                    Administrador
+                        <form action="{{ url_for('remover_usuario', id=usuario.id) }}" method="POST">
+                            <button class="botao pequeno" type="submit">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
                 {% else %}
-                    Cliente
-                {% endif %}
-            </td>
+                <tr>
+                    <td colspan="4">Nenhum cliente cadastrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-            <td>
-                {% if usuario.principal %}
+</section>
 
-                    <strong>Administrador principal</strong>
+<section class="admin-tabela-section">
 
-                {% elif usuario.id == session["usuario"] %}
+    <div class="admin-titulo">
+        <span>🛡️</span>
+        <div>
+            <h2>Administradores</h2>
+            <p>Usuários com acesso à área administrativa.</p>
+        </div>
+    </div>
 
-                    <strong>Você</strong>
+    <div class="admin-tabela">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nº</th>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
 
-                {% elif usuario.adm %}
+            <tbody>
+                {% for usuario in administradores %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ usuario.nome }}</td>
+                    <td>{{ usuario.email }}</td>
+                    <td class="acoes">
 
-                    <form action="{{ url_for('remover_adm', id=usuario.id) }}" method="POST">
-                        <button type="submit">Remover ADM</button>
-                    </form>
+                        {% if usuario.principal %}
+                            <strong>Administrador principal</strong>
 
-                    <form action="{{ url_for('remover_usuario', id=usuario.id) }}" method="POST">
-                        <button type="submit">Excluir usuário</button>
-                    </form>
+                        {% elif usuario.id == session["usuario"] %}
+                            <strong>Você</strong>
 
+                        {% else %}
+                            <form action="{{ url_for('remover_adm', id=usuario.id) }}" method="POST">
+                                <button class="botao pequeno" type="submit">Remover ADM</button>
+                            </form>
+
+                            <form action="{{ url_for('remover_usuario', id=usuario.id) }}" method="POST">
+                                <button class="botao pequeno" type="submit">Excluir</button>
+                            </form>
+                        {% endif %}
+
+                    </td>
+                </tr>
                 {% else %}
+                <tr>
+                    <td colspan="4">Nenhum administrador cadastrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-                    <form action="{{ url_for('tornar_adm', id=usuario.id) }}" method="POST">
-                        <button type="submit">Tornar ADM</button>
-                    </form>
-
-                    <form action="{{ url_for('remover_usuario', id=usuario.id) }}" method="POST">
-                        <button type="submit">Excluir usuário</button>
-                    </form>
-
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+</section>
 
 {% endblock %}

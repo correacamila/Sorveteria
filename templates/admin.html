@@ -4,120 +4,55 @@
 
 {% block content %}
 
-<section class="pagina-titulo">
-    <span class="tag">ADMINISTRAÇÃO</span>
+<section class="admin-cabecalho">
+    <span class="tag">ÁREA ADMINISTRATIVA</span>
     <h1>Painel administrativo</h1>
     <p>Gerencie a sorveteria por aqui.</p>
 </section>
 
-<div class="estatisticas">
+<section class="admin-gerenciamento">
 
-    <div>
-        <h3>Total de pedidos</h3>
-        <p>{{ total_pedidos }}</p>
+    <div class="admin-titulo">
+        <span>⚙️</span>
+        <div>
+            <h2>Gerenciamento</h2>
+            <p>Acesse as principais funções administrativas.</p>
+        </div>
     </div>
 
-    <div>
-        <h3>Pedidos entregues</h3>
-        <p>{{ pedidos_entregues }}</p>
-    </div>
+    <div class="admin-opcoes">
 
-    <div>
-        <h3>Pedidos pendentes</h3>
-        <p>{{ pedidos_pendentes }}</p>
-    </div>
-
-    <div>
-        <h3>Total de usuários</h3>
-        <p>{{ total_usuarios }}</p>
-    </div>
-
-    <div>
-        <h3>Total de produtos</h3>
-        <p>{{ total_produtos }}</p>
-    </div>
-
-    <div>
-        <h3>Faturamento</h3>
-        <p>R$ {{ "%.2f"|format(faturamento) }}</p>
-    </div>
-
-</div>
-
-<section>
-
-    <h2>Gerenciamento</h2>
-
-    <div>
-
-        <a href="{{ url_for('admin_pedidos') }}">
-            <button type="button">Gerenciar pedidos</button>
+        <a href="{{ url_for('admin_pedidos') }}" class="admin-opcao">
+            <span>📦</span>
+            <h3>Pedidos</h3>
+            <p>Visualize e altere o status dos pedidos.</p>
         </a>
 
-        <a href="{{ url_for('admin_usuarios') }}">
-            <button type="button">Gerenciar usuários</button>
+        <a href="{{ url_for('admin_usuarios') }}" class="admin-opcao">
+            <span>👥</span>
+            <h3>Usuários</h3>
+            <p>Gerencie clientes e administradores.</p>
         </a>
 
-        <a href="{{ url_for('admin_produtos') }}">
-            <button type="button">Gerenciar produtos</button>
+        <a href="{{ url_for('admin_produtos') }}" class="admin-opcao">
+            <span>🍨</span>
+            <h3>Produtos</h3>
+            <p>Adicione, edite ou remova produtos.</p>
+        </a>
+
+        <a href="{{ url_for('admin_financeiro') }}" class="admin-opcao">
+            <span>💰</span>
+            <h3>Financeiro</h3>
+            <p>Veja o faturamento e as vendas da sorveteria.</p>
+        </a>
+        <a href="{{ url_for('relatorio') }}" class="admin-opcao">
+            <span>📊</span>
+            <h3>Relatório</h3>
+            <p>Veja um resumo dos dados da sorveteria.</p>
         </a>
 
     </div>
 
 </section>
 
-<section>
-
-    <h2>Gastos por cliente</h2>
-
-    <table>
-
-        <thead>
-            <tr>
-                <th>Cliente</th>
-                <th>Total gasto</th>
-            </tr>
-        </thead>
-
-        <tbody>
-
-            {% for cliente in gastos_clientes %}
-
-            <tr>
-                <td>{{ cliente.nome }}</td>
-                <td>R$ {{ "%.2f"|format(cliente.total) }}</td>
-            </tr>
-
-            {% endfor %}
-
-        </tbody>
-
-    </table>
-
-</section>
-<section>
-
-    <h2>Vendas por produto</h2>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Produto</th>
-                <th>Quantidade vendida</th>
-                <th>Faturamento</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            {% for produto in faturamento_produtos %}
-            <tr>
-                <td>{{ produto.nome }}</td>
-                <td>{{ produto.quantidade }}</td>
-                <td>R$ {{ "%.2f"|format(produto.total) }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-</section>
 {% endblock %}

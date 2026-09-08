@@ -1,15 +1,21 @@
 {% extends "base.html" %}
+
 {% block title %}Meus Pedidos - Doce Neve{% endblock %}
 
 {% block content %}
+
 <section class="pagina-titulo">
     <span class="tag">MEUS PEDIDOS</span>
     <h1>Seus pedidos 🍨</h1>
+    <p>Acompanhe seus pedidos e veja o status de cada um.</p>
 </section>
 
 {% if pedidos %}
-<div class="tabela-box">
+
+<section class="tabela-box">
+
     <table>
+
         <thead>
             <tr>
                 <th>#</th>
@@ -19,24 +25,63 @@
                 <th>Status</th>
             </tr>
         </thead>
+
         <tbody>
-        {% for pedido in pedidos %}
+
+            {% for pedido in pedidos %}
+
             <tr>
-                <td>{{ pedido.id }}</td>
+                <td>{{ loop.index }}</td>
+
                 <td>{{ pedido.produto }}</td>
+
                 <td>{{ pedido.quantidade }}</td>
-                <td>R$ {{ "%.2f"|format(pedido.total) }}</td>
-                <td><span class="status">{{ pedido.status }}</span></td>
+
+                <td>
+                    R$ {{ "%.2f"|format(pedido.total) }}
+                </td>
+
+                <td>
+                    {% if pedido.status == "Recebido" %}
+                        <span class="status recebido">Recebido</span>
+
+                    {% elif pedido.status == "Em preparação" %}
+                        <span class="status preparacao">Em preparação</span>
+
+                    {% elif pedido.status == "Pronto" %}
+                        <span class="status pronto">Pronto</span>
+
+                    {% elif pedido.status == "Entregue" %}
+                        <span class="status entregue">Entregue</span>
+
+                    {% endif %}
+                </td>
             </tr>
-        {% endfor %}
+
+            {% endfor %}
+
         </tbody>
+
     </table>
-</div>
+
+</section>
+
 {% else %}
-<div class="vazio">
+
+<section class="vazio">
+
     <div>🍦</div>
+
     <h2>Você ainda não fez pedidos.</h2>
-    <a class="botao" href="{{ url_for('novo_pedido') }}">Fazer meu primeiro pedido</a>
-</div>
+
+    <p>Que tal escolher um sabor delicioso?</p>
+
+    <a class="botao" href="{{ url_for('novo_pedido') }}">
+        Fazer meu primeiro pedido 🍨
+    </a>
+
+</section>
+
 {% endif %}
+
 {% endblock %}

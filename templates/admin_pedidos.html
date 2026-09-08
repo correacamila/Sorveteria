@@ -7,65 +7,79 @@
 <section class="pagina-titulo">
     <span class="tag">ADMINISTRAÇÃO</span>
     <h1>Gerenciar pedidos</h1>
-    <p>Veja e atualize os pedidos dos clientes.</p>
+    <p>Visualize os pedidos e atualize seus status.</p>
 </section>
 
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Cliente</th>
-            <th>Produto</th>
-            <th>Preço</th>
-            <th>Quantidade</th>
-            <th>Total</th>
-            <th>Status</th>
-            <th>Ação</th>
-        </tr>
-    </thead>
+<section class="admin-tabela-section">
 
-    <tbody>
-        {% for pedido in pedidos %}
-        <tr>
-            <td>{{ pedido.id }}</td>
-            <td>{{ pedido.cliente }}</td>
-            <td>{{ pedido.produto }}</td>
-            <td>R$ {{ "%.2f"|format(pedido.preco) }}</td>
-            <td>{{ pedido.quantidade }}</td>
-            <td>R$ {{ "%.2f"|format(pedido.total) }}</td>
+    <div class="admin-titulo">
+        <span>📦</span>
+        <div>
+            <h2>Pedidos realizados</h2>
+            <p>Acompanhe os pedidos da Doce Neve.</p>
+        </div>
+    </div>
 
-            <td>
-                {{ pedido.status }}
-            </td>
+    <div class="admin-tabela">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nº</th>
+                    <th>Cliente</th>
+                    <th>Produto</th>
+                    <th>Preço</th>
+                    <th>Quantidade</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
 
-            <td>
-                <form action="{{ url_for('alterar_status', id=pedido.id) }}" method="POST">
+            <tbody>
+                {% for pedido in pedidos %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ pedido.cliente }}</td>
+                    <td>{{ pedido.produto }}</td>
+                    <td>R$ {{ "%.2f"|format(pedido.preco) }}</td>
+                    <td>{{ pedido.quantidade }}</td>
+                    <td>R$ {{ "%.2f"|format(pedido.total) }}</td>
 
-                    <select name="status">
-                        <option value="Recebido" {% if pedido.status == "Recebido" %}selected{% endif %}>
-                            Recebido
-                        </option>
+                    <td>
+                        {% if pedido.status == "Recebido" %}
+                            <span class="status recebido">Recebido</span>
+                        {% elif pedido.status == "Em preparação" %}
+                            <span class="status preparacao">Em preparação</span>
+                        {% elif pedido.status == "Pronto" %}
+                            <span class="status pronto">Pronto</span>
+                        {% elif pedido.status == "Entregue" %}
+                            <span class="status entregue">Entregue</span>
+                        {% endif %}
+                    </td>
 
-                        <option value="Em preparação" {% if pedido.status == "Em preparação" %}selected{% endif %}>
-                            Em preparação
-                        </option>
+                    <td>
+                        <form action="{{ url_for('alterar_status', id=pedido.id) }}" method="POST">
+                            <select name="status">
+                                <option value="Recebido" {% if pedido.status == "Recebido" %}selected{% endif %}>Recebido</option>
+                                <option value="Em preparação" {% if pedido.status == "Em preparação" %}selected{% endif %}>Em preparação</option>
+                                <option value="Pronto" {% if pedido.status == "Pronto" %}selected{% endif %}>Pronto</option>
+                                <option value="Entregue" {% if pedido.status == "Entregue" %}selected{% endif %}>Entregue</option>
+                            </select>
 
-                        <option value="Pronto" {% if pedido.status == "Pronto" %}selected{% endif %}>
-                            Pronto
-                        </option>
+                            <button class="botao pequeno" type="submit">Alterar</button>
+                        </form>
+                    </td>
+                </tr>
 
-                        <option value="Entregue" {% if pedido.status == "Entregue" %}selected{% endif %}>
-                            Entregue
-                        </option>
-                    </select>
+                {% else %}
+                <tr>
+                    <td colspan="8">Nenhum pedido realizado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-                    <button type="submit">Alterar</button>
-
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+</section>
 
 {% endblock %}

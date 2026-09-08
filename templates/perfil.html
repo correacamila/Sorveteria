@@ -1,11 +1,37 @@
 {% extends "base.html" %}
-{% block title %}Perfil - Doce Neve{% endblock %}
+{% block title %}Meu Perfil - Doce Neve{% endblock %}
 
 {% block content %}
-<div class="perfil">
-    <div class="avatar">🍦</div>
-    <h1>{{ usuario.nome }}</h1>
-    <p>{{ usuario.email }}</p>
-    <a class="botao" href="{{ url_for('pedidos') }}">Ver meus pedidos</a>
-</div>
+
+<section class="pagina-titulo">
+    <span class="tag">MEU PERFIL</span>
+    <h1>Minha conta 🍦</h1>
+    <p>Confira suas informações na Doce Neve.</p>
+</section>
+
+<section class="perfil">
+    <div class="perfil-foto">
+        <img src="{{ url_for('static', filename=usuario.foto) }}" alt="Foto de perfil">
+    </div>
+
+    <div class="perfil-info">
+        <span class="categoria">SEUS DADOS</span>
+        <h2>{{ usuario.nome }}</h2>
+        <p><strong>Apelido:</strong> {{ usuario.apelido }}</p>
+        <p><strong>E-mail:</strong> {{ usuario.email }}</p>
+        <p><strong>Entrou em:</strong> {{ usuario.data_entrada }}</p>
+
+        {% if usuario.adm %}
+            <p><strong>Tipo de conta:</strong> Administrador 👑</p>
+        {% else %}
+            <p><strong>Tipo de conta:</strong> Usuário 🍨</p>
+        {% endif %}
+    </div>
+
+    <div class="perfil-acoes">
+        <a class="botao" href="{{ url_for('pedidos') }}">Meus pedidos 🍨</a>
+        <a class="botao secundario" href="{{ url_for('cardapio') }}">Ver cardápio 🍦</a>
+    </div>
+</section>
+
 {% endblock %}

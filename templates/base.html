@@ -6,40 +6,53 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
 </head>
+
 <body>
 
 <header class="cabecalho">
-    <h1 class="logo">🍦 Doce Neve</h1>
+    <a href="{{ url_for('inicio') }}" class="logo">🍦 Doce Neve</a>
 
     <nav>
         <a href="{{ url_for('inicio') }}">Início</a>
         <a href="{{ url_for('cardapio') }}">Cardápio</a>
 
         {% if session.get("usuario") %}
+
             <a href="{{ url_for('novo_pedido') }}">Pedir</a>
             <a href="{{ url_for('pedidos') }}">Meus pedidos</a>
             <a href="{{ url_for('perfil') }}">Perfil</a>
-            <a href="{{ url_for('logout') }}">Sair</a>
-        {% if session.get("adm") %}
+
+            {% if session.get("adm") %}
                 <a href="{{ url_for('admin') }}">Administração</a>
             {% endif %}
+
+            <a href="{{ url_for('logout') }}">Sair</a>
+
         {% else %}
+
             <a href="{{ url_for('login') }}">Entrar</a>
             <a href="{{ url_for('cadastro') }}" class="botao-nav">Cadastrar</a>
+
         {% endif %}
     </nav>
 </header>
 
 <main class="container">
+
     {% with mensagens = get_flashed_messages(with_categories=true) %}
+
         {% if mensagens %}
+
             {% for categoria, mensagem in mensagens %}
                 <div class="alerta {{ categoria }}">{{ mensagem }}</div>
             {% endfor %}
+
         {% endif %}
+
     {% endwith %}
 
     {% block content %}{% endblock %}
+
 </main>
 
 <footer>
