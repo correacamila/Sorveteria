@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Meus Pedidos - Doce Neve{% endblock %}
+
+{% block content %}
+<section class="pagina-titulo">
+    <span class="tag">MEUS PEDIDOS</span>
+    <h1>Seus pedidos 🍨</h1>
+</section>
+
+{% if pedidos %}
+<div class="tabela-box">
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Total</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pedido in pedidos %}
+            <tr>
+                <td>{{ pedido.id }}</td>
+                <td>{{ pedido.produto }}</td>
+                <td>{{ pedido.quantidade }}</td>
+                <td>R$ {{ "%.2f"|format(pedido.total) }}</td>
+                <td><span class="status">{{ pedido.status }}</span></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="vazio">
+    <div>🍦</div>
+    <h2>Você ainda não fez pedidos.</h2>
+    <a class="botao" href="{{ url_for('novo_pedido') }}">Fazer meu primeiro pedido</a>
+</div>
+{% endif %}
+{% endblock %}

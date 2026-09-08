@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Pedidos - Administração{% endblock %}
+
+{% block content %}
+
+<section class="pagina-titulo">
+    <span class="tag">ADMINISTRAÇÃO</span>
+    <h1>Gerenciar pedidos</h1>
+    <p>Veja e atualize os pedidos dos clientes.</p>
+</section>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Produto</th>
+            <th>Preço</th>
+            <th>Quantidade</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for pedido in pedidos %}
+        <tr>
+            <td>{{ pedido.id }}</td>
+            <td>{{ pedido.cliente }}</td>
+            <td>{{ pedido.produto }}</td>
+            <td>R$ {{ "%.2f"|format(pedido.preco) }}</td>
+            <td>{{ pedido.quantidade }}</td>
+            <td>R$ {{ "%.2f"|format(pedido.total) }}</td>
+
+            <td>
+                {{ pedido.status }}
+            </td>
+
+            <td>
+                <form action="{{ url_for('alterar_status', id=pedido.id) }}" method="POST">
+
+                    <select name="status">
+                        <option value="Recebido" {% if pedido.status == "Recebido" %}selected{% endif %}>
+                            Recebido
+                        </option>
+
+                        <option value="Em preparação" {% if pedido.status == "Em preparação" %}selected{% endif %}>
+                            Em preparação
+                        </option>
+
+                        <option value="Pronto" {% if pedido.status == "Pronto" %}selected{% endif %}>
+                            Pronto
+                        </option>
+
+                        <option value="Entregue" {% if pedido.status == "Entregue" %}selected{% endif %}>
+                            Entregue
+                        </option>
+                    </select>
+
+                    <button type="submit">Alterar</button>
+
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

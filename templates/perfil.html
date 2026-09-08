@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Perfil - Doce Neve{% endblock %}
+
+{% block content %}
+<div class="perfil">
+    <div class="avatar">🍦</div>
+    <h1>{{ usuario.nome }}</h1>
+    <p>{{ usuario.email }}</p>
+    <a class="botao" href="{{ url_for('pedidos') }}">Ver meus pedidos</a>
+</div>
+{% endblock %}

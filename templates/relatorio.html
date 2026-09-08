@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Relatório - Doce Neve{% endblock %}
+
+{% block content %}
+<section class="pagina-titulo">
+    <span class="tag">RESUMO</span>
+    <h1>Relatório da sorveteria 📊</h1>
+</section>
+
+<div class="estatisticas">
+    <div><strong>{{ total_produtos }}</strong><span>Produtos</span></div>
+    <div><strong>{{ total_usuarios }}</strong><span>Usuários</span></div>
+    <div><strong>{{ total_pedidos }}</strong><span>Pedidos</span></div>
+    <div><strong>R$ {{ "%.2f"|format(faturamento) }}</strong><span>Faturamento</span></div>
+</div>
+{% endblock %}

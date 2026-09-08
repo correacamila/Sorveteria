@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Usuários - Administração{% endblock %}
+
+{% block content %}
+
+<section class="pagina-titulo">
+    <span class="tag">ADMINISTRAÇÃO</span>
+    <h1>Gerenciar usuários</h1>
+    <p>Veja os usuários cadastrados e gerencie as permissões.</p>
+</section>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Tipo</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for usuario in usuarios %}
+        <tr>
+            <td>{{ usuario.id }}</td>
+
+            <td>{{ usuario.nome }}</td>
+
+            <td>{{ usuario.email }}</td>
+
+            <td>
+                {% if usuario.principal %}
+                    Administrador principal
+                {% elif usuario.adm %}
+                    Administrador
+                {% else %}
+                    Cliente
+                {% endif %}
+            </td>
+
+            <td>
+                {% if usuario.principal %}
+
+                    <strong>Administrador principal</strong>
+
+                {% elif usuario.id == session["usuario"] %}
+
+                    <strong>Você</strong>
+
+                {% elif usuario.adm %}
+
+                    <form action="{{ url_for('remover_adm', id=usuario.id) }}" method="POST">
+                        <button type="submit">Remover ADM</button>
+                    </form>
+
+                    <form action="{{ url_for('remover_usuario', id=usuario.id) }}" method="POST">
+                        <button type="submit">Excluir usuário</button>
+                    </form>
+
+                {% else %}
+
+                    <form action="{{ url_for('tornar_adm', id=usuario.id) }}" method="POST">
+                        <button type="submit">Tornar ADM</button>
+                    </form>
+
+                    <form action="{{ url_for('remover_usuario', id=usuario.id) }}" method="POST">
+                        <button type="submit">Excluir usuário</button>
+                    </form>
+
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

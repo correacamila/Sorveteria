@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Início - Doce Neve{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <span class="tag">FEITO PARA DEIXAR SEU DIA MAIS DOCE</span>
+        <h1>Seu momento feliz começa com um sorvete.</h1>
+        <p>Sabores cremosos, combinações especiais e muita alegria em cada pedido.</p>
+        <a class="botao" href="{{ url_for('cardapio') }}">Ver cardápio 🍨</a>
+    </div>
+    <div class="hero-emoji">🍦</div>
+</section>
+
+<section>
+    <div class="titulo-secao">
+        <span>⭐</span>
+        <h2>Favoritos da casa</h2>
+    </div>
+
+    <div class="grade">
+        {% for produto in produtos[:4] %}
+        <article class="card">
+            <div class="icone-sorvete">🍨</div>
+            <span class="categoria">{{ produto.categoria }}</span>
+            <h3>{{ produto.nome }}</h3>
+            <p>{{ produto.descricao }}</p>
+            <strong>R$ {{ "%.2f"|format(produto.preco) }}</strong>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

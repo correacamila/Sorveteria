@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Administração - Doce Neve{% endblock %}
+
+{% block content %}
+
+<section class="pagina-titulo">
+    <span class="tag">ADMINISTRAÇÃO</span>
+    <h1>Painel administrativo</h1>
+    <p>Gerencie a sorveteria por aqui.</p>
+</section>
+
+<div class="estatisticas">
+
+    <div>
+        <h3>Total de pedidos</h3>
+        <p>{{ total_pedidos }}</p>
+    </div>
+
+    <div>
+        <h3>Pedidos entregues</h3>
+        <p>{{ pedidos_entregues }}</p>
+    </div>
+
+    <div>
+        <h3>Pedidos pendentes</h3>
+        <p>{{ pedidos_pendentes }}</p>
+    </div>
+
+    <div>
+        <h3>Total de usuários</h3>
+        <p>{{ total_usuarios }}</p>
+    </div>
+
+    <div>
+        <h3>Total de produtos</h3>
+        <p>{{ total_produtos }}</p>
+    </div>
+
+    <div>
+        <h3>Faturamento</h3>
+        <p>R$ {{ "%.2f"|format(faturamento) }}</p>
+    </div>
+
+</div>
+
+<section>
+
+    <h2>Gerenciamento</h2>
+
+    <div>
+
+        <a href="{{ url_for('admin_pedidos') }}">
+            <button type="button">Gerenciar pedidos</button>
+        </a>
+
+        <a href="{{ url_for('admin_usuarios') }}">
+            <button type="button">Gerenciar usuários</button>
+        </a>
+
+        <a href="{{ url_for('admin_produtos') }}">
+            <button type="button">Gerenciar produtos</button>
+        </a>
+
+    </div>
+
+</section>
+
+<section>
+
+    <h2>Gastos por cliente</h2>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Total gasto</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for cliente in gastos_clientes %}
+
+            <tr>
+                <td>{{ cliente.nome }}</td>
+                <td>R$ {{ "%.2f"|format(cliente.total) }}</td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</section>
+<section>
+
+    <h2>Vendas por produto</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Produto</th>
+                <th>Quantidade vendida</th>
+                <th>Faturamento</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for produto in faturamento_produtos %}
+            <tr>
+                <td>{{ produto.nome }}</td>
+                <td>{{ produto.quantidade }}</td>
+                <td>R$ {{ "%.2f"|format(produto.total) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</section>
+{% endblock %}

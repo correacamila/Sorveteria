@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Produtos - Administração{% endblock %}
+
+{% block content %}
+
+<section class="pagina-titulo">
+    <span class="tag">ADMINISTRAÇÃO</span>
+    <h1>Gerenciar produtos</h1>
+    <p>Adicione, edite ou remova produtos do cardápio.</p>
+</section>
+
+<h2>Adicionar produto</h2>
+
+<form action="{{ url_for('adicionar_produto') }}" method="POST">
+
+    <label>Nome</label>
+    <input type="text" name="nome" required>
+
+    <label>Descrição</label>
+    <input type="text" name="descricao" required>
+
+    <label>Categoria</label>
+    <input type="text" name="categoria" required>
+
+    <label>Preço</label>
+    <input type="number" name="preco" step="0.01" min="0" required>
+
+    <button type="submit">Adicionar produto</button>
+
+</form>
+
+<h2>Produtos cadastrados</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Categoria</th>
+            <th>Preço</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for produto in produtos %}
+        <tr>
+            <td>{{ produto.id }}</td>
+            <td>{{ produto.nome }}</td>
+            <td>{{ produto.categoria }}</td>
+            <td>R$ {{ "%.2f"|format(produto.preco) }}</td>
+
+            <td>
+                <a href="{{ url_for('editar_produto', id=produto.id) }}">
+                    <button type="button">Editar</button>
+                </a>
+
+                <form action="{{ url_for('remover_produto', id=produto.id) }}" method="POST">
+                    <button type="submit">Remover</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,105 @@
+{
+    "usuarios": [
+        {
+            "id": 1,
+            "nome": "Administrador",
+            "email": "admin.docedeneve@gmail.com",
+            "senha": "1234567890",
+            "adm": true,
+            "principal": true
+        },
+        {
+            "id": 6,
+            "nome": "Letícia César",
+            "email": "leticia.cesar@gmail.com",
+            "senha": "0987654321",
+            "adm": true,
+            "principal": false
+        }
+    ],
+    "produtos": [
+        {
+            "id": 1,
+            "nome": "Chocolate Cremoso",
+            "descricao": "Sorvete de chocolate cremoso.",
+            "categoria": "Clássicos",
+            "preco": 8.5
+        },
+        {
+            "id": 2,
+            "nome": "Morango",
+            "descricao": "Sorvete de morango refrescante.",
+            "categoria": "Frutas",
+            "preco": 8.0
+        },
+        {
+            "id": 3,
+            "nome": "Ninho com Nutella",
+            "descricao": "Sorvete de leite em pó com creme de avelã.",
+            "categoria": "Especiais",
+            "preco": 11.5
+        },
+        {
+            "id": 4,
+            "nome": "Baunilha",
+            "descricao": "Clássico sorvete de baunilha.",
+            "categoria": "Clássicos",
+            "preco": 7.5
+        },
+        {
+            "id": 5,
+            "nome": "Maracujá",
+            "descricao": "Sorvete de maracujá doce e refrescante.",
+            "categoria": "Frutas",
+            "preco": 8.5
+        },
+        {
+            "id": 6,
+            "nome": "Chocomenta",
+            "descricao": "Um delicioso sabor de pasta de dente com chocolate amargo, perfeito para um beijo!",
+            "categoria": "Especiais",
+            "preco": 7.0
+        }
+    ],
+    "pedidos": [
+        {
+            "id": 1,
+            "usuario_id": 1,
+            "produto": "Chocolate Cremoso",
+            "preco": 8.5,
+            "quantidade": 1,
+            "total": 8.5,
+            "status": "Entregue"
+        },
+        {
+            "id": 2,
+            "usuario_id": 6,
+            "produto": "Chocolate Cremoso",
+            "preco": 8.5,
+            "quantidade": 1,
+            "total": 8.5,
+            "status": "Entregue"
+        },
+        {
+            "id": 3,
+            "usuario_id": 1,
+            "produto": "Chocolate Cremoso",
+            "preco": 8.5,
+            "quantidade": 2,
+            "total": 17.0,
+            "status": "Entregue"
+        },
+        {
+            "id": 4,
+            "usuario_id": 1,
+            "produto": "Chocomenta",
+            "preco": 7.0,
+            "quantidade": 2,
+            "total": 14.0,
+            "status": "Entregue"
+        }
+    ],
+    "proximo_id_pedido": 5,
+    "proximo_id_usuario": 7,
+    "proximo_id_produto": 7
+}

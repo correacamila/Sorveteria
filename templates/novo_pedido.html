@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Novo Pedido - Doce Neve{% endblock %}
+
+{% block content %}
+<div class="formulario-box">
+    <h1>Novo pedido 🍦</h1>
+
+    <form method="POST">
+        <label>Escolha o sabor</label>
+        <select name="produto_id" required>
+            {% for produto in produtos %}
+                <option value="{{ produto.id }}">
+                    {{ produto.nome }} — R$ {{ "%.2f"|format(produto.preco) }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label>Quantidade</label>
+        <input type="number" name="quantidade" min="1" value="1" required>
+        <button class="botao" type="submit">Confirmar pedido</button>
+    </form>
+</div>
+{% endblock %}
