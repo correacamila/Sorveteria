@@ -10,8 +10,9 @@
 </section>
 
 <section class="perfil">
+
     <div class="perfil-foto">
-        <img src="{{ url_for('static', filename=usuario.foto) }}" alt="Foto de perfil">
+        <img src="{{ url_for('static', filename='avatares/' + usuario.foto) }}" alt="Foto de perfil">
     </div>
 
     <div class="perfil-info">
@@ -28,10 +29,84 @@
         {% endif %}
     </div>
 
-    <div class="perfil-acoes">
-        <a class="botao" href="{{ url_for('pedidos') }}">Meus pedidos 🍨</a>
-        <a class="botao secundario" href="{{ url_for('cardapio') }}">Ver cardápio 🍦</a>
+</section>
+
+<section class="avatar-atual">
+    <span class="categoria">SEU AVATAR</span>
+
+    <div class="avatar-preview">
+        <img src="{{ url_for('static', filename='avatares/' + usuario.foto) }}" alt="Avatar atual">
     </div>
+
+    <button class="botao" type="button" onclick="abrirAvatares()">
+        Alterar avatar ✨
+    </button>
+</section>
+
+<div id="janela-avatares" class="janela-fundo">
+    <div class="janela-avatares">
+
+        <button class="fechar" type="button" onclick="fecharAvatares()">×</button>
+
+        <span class="categoria">PERSONALIZE SEU PERFIL</span>
+        <h2>Escolha seu avatar 🍦</h2>
+
+        <form method="POST">
+            <div class="avatares">
+
+                {% if usuario.adm %}
+
+                    {% set avatares = [
+                        ("admin_fem.png", "Administradora"),
+                        ("admin_mas.png", "Administrador"),
+                        ("admin_neutro.png", "Administrador neutro")
+                    ] %}
+
+                {% else %}
+
+                    {% set avatares = [
+                        ("inicial_fem.png", "Feminino"),
+                        ("inicial_mas.png", "Masculino"),
+                        ("inicial_neutro.png", "Neutro"),
+                        ("morango.png", "Morango"),
+                        ("chocolate.png", "Chocolate"),
+                        ("ninho_nutella.png", "Ninho com Nutella"),
+                        ("baunilha.png", "Baunilha"),
+                        ("maracuja.png", "Maracujá"),
+                        ("chocomenta.png", "Chocomenta")
+                    ] %}
+
+                {% endif %}
+
+                {% for arquivo, nome in avatares %}
+                <label class="avatar-opcao">
+                    <input type="radio" name="foto" value="{{ arquivo }}" {% if usuario.foto == arquivo %}checked{% endif %}>
+                    <img src="{{ url_for('static', filename='avatares/' + arquivo) }}" alt="{{ nome }}">
+                    <span>{{ nome }}</span>
+                </label>
+                {% endfor %}
+
+            </div>
+
+            <button class="botao" type="submit">Salvar avatar 🍦</button>
+        </form>
+
+    </div>
+</div>
+
+<script>
+function abrirAvatares(){
+    document.getElementById("janela-avatares").style.display="flex";
+}
+
+function fecharAvatares(){
+    document.getElementById("janela-avatares").style.display="none";
+}
+</script>
+
+<section class="perfil-acoes">
+    <a class="botao" href="{{ url_for('pedidos') }}">Meus pedidos 🍨</a>
+    <a class="botao secundario" href="{{ url_for('cardapio') }}">Ver cardápio 🍦</a>
 </section>
 
 {% endblock %}

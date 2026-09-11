@@ -7,7 +7,7 @@ class Usuario:
         self.email=email
         self.senha=senha
         self.apelido=apelido
-        self.foto=foto
+        self.foto="inicial_fem.png"
         self.data_entrada=data_entrada or date.today().strftime("%d/%m/%Y")
         self.adm=adm
         self.principal=principal

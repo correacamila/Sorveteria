@@ -82,7 +82,7 @@ def logout():
     flash("Você saiu da conta.","sucesso")
     return redirect(url_for("inicio"))
 
-@app.route("/perfil")
+@app.route("/perfil",methods=["GET","POST"])
 def perfil():
     erro=exigir_login()
     if erro:return erro
@@ -92,6 +92,17 @@ def perfil():
         if item["id"]==session["usuario"]:
             usuario=item
             break
+
+    if request.method=="POST":
+        foto=request.form["foto"]
+        avatares=["morango.png","chocolate.png","ninho_nutella.png","baunilha.png","maracuja.png","chocomenta.png", "admin_fem.png", "admin_mas.png", "admin_neutro.png", "inicial_fem.png", "inicial_mas.png","inicial_neutro.png"]
+
+        if foto in avatares:
+            usuario["foto"]=foto
+            salvar_dados(dados)
+
+        return redirect(url_for("perfil"))
+
     return render_template("perfil.html",usuario=usuario)
 
 @app.route("/pedido",methods=["GET","POST"])
