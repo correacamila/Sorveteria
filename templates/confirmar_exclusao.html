@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Confirmar exclusão - Doce Neve{% endblock %}
+
+{% block content %}
+
+<section class="pagina-titulo">
+    <span class="tag">ATENÇÃO</span>
+
+    {% if tipo == "usuario" %}
+        <h1>Tem certeza que deseja excluir este usuário?</h1>
+        <p>A conta de <strong>{{ usuario.nome }}</strong> será removida permanentemente.</p>
+
+    {% elif tipo == "produto" %}
+        <h1>Tem certeza que deseja excluir este sorvete?</h1>
+        <p>O sorvete <strong>{{ produto.nome }}</strong> será removido do cardápio.</p>
+    {% endif %}
+</section>
+
+<section class="confirmacao-box">
+
+    {% if tipo == "usuario" %}
+
+        <form method="POST" action="{{ url_for('remover_usuario', id=usuario.id) }}">
+            <button class="botao secundario" type="submit">
+                Sim, excluir usuário
+            </button>
+        </form>
+
+        <a class="botao" href="{{ url_for('admin_usuarios') }}">
+            Cancelar
+        </a>
+
+    {% elif tipo == "produto" %}
+
+        <form method="POST" action="{{ url_for('remover_produto', id=produto.id) }}">
+            <button class="botao secundario" type="submit">
+                Sim, excluir sorvete
+            </button>
+        </form>
+
+        <a class="botao" href="{{ url_for('admin_produtos') }}">
+            Cancelar
+        </a>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

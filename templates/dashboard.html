@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container dashboard">
+
+    <div class="titulo-pagina">
+        <h1>📊 Dashboard</h1>
+        <p>Acompanhe as vendas e o rendimento da sorveteria.</p>
+    </div>
+
+    <div class="graficos">
+
+        <!-- Gráfico de compras -->
+        <div class="card-grafico">
+            <h2>🍨 Compras por sorvete</h2>
+            <canvas id="graficoSorvetes"></canvas>
+        </div>
+
+        <!-- Gráfico financeiro -->
+        <div class="card-grafico">
+            <h2>💰 Rendimento financeiro</h2>
+            <canvas id="graficoRendimento"></canvas>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const vendas = JSON.parse('{{ vendas | tojson | safe }}');
+    const rendimento = JSON.parse('{{ rendimento | tojson | safe }}');
+
+    // Gráfico de compras
+    new Chart(document.getElementById("graficoSorvetes"), {
+        type: "doughnut",
+        data: {
+            labels: Object.keys(vendas),
+            datasets: [{
+                data: Object.values(vendas),
+                backgroundColor: [
+                    "#F7A8C4",
+                    "#F6D6A8",
+                    "#B8D8D8",
+                    "#D8B4E2",
+                    "#F2C6A0",
+                    "#C9B1E1"
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: "bottom"
+                }
+            }
+        }
+    });
+
+    // Gráfico financeiro
+    new Chart(document.getElementById("graficoRendimento"), {
+        type: "line",
+        data: {
+            labels: Object.keys(rendimento),
+            datasets: [{
+            label: "Rendimento (R$)",
+            data: Object.values(rendimento),
+            borderColor: "#D77A9A",
+            backgroundColor: "#F7A8C4",
+            tension: 0.3,
+            fill: false
+        }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+{% endblock %}

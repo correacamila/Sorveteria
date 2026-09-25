@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Confirmar saída - Doce Neve{% endblock %}
+
+{% block content %}
+
+<section class="pagina-titulo">
+    <span class="tag">CONFIRMAÇÃO</span>
+    <h1>Tem certeza que deseja sair? 🍦</h1>
+    <p>Você poderá entrar novamente quando quiser.</p>
+</section>
+
+<section class="confirmacao-box">
+
+    <a class="botao" href="{{ url_for('logout') }}">
+        Sim, quero sair
+    </a>
+
+    <a class="botao secundario" href="{{ url_for('inicio') }}">
+        Cancelar
+    </a>
+
+</section>
+
+{% endblock %}

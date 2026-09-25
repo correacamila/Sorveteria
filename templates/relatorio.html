@@ -1,53 +1,88 @@
 {% extends "base.html" %}
-
-{% block title %}Relatório - Doce Neve{% endblock %}
-
+{% block title %}Relatórios - Administração{% endblock %}
 {% block content %}
-
 <section class="pagina-titulo">
-    <span class="tag">RESUMO</span>
-    <h1>Relatório da sorveteria 📊</h1>
-    <p>Confira um resumo dos principais dados da sorveteria.</p>
+    <span class="tag">ADMINISTRAÇÃO</span>
+    <h1>Dashboard de relatórios 📊</h1>
+    <p>Visão geral das vendas e do rendimento da Doce Neve.</p>
 </section>
 
 <section class="resumo-grid">
-
-    <div class="resumo-card">
-        <span>🍨</span>
-        <strong>{{ total_produtos }}</strong>
-        <p>Produtos</p>
-    </div>
-
-    <div class="resumo-card">
-        <span>👥</span>
-        <strong>{{ total_usuarios }}</strong>
-        <p>Usuários</p>
-    </div>
-
-    <div class="resumo-card">
-        <span>📦</span>
-        <strong>{{ total_pedidos }}</strong>
-        <p>Pedidos</p>
-    </div>
-
-    <div class="resumo-card">
-        <span>💰</span>
-        <strong>R$ {{ "%.2f"|format(faturamento) }}</strong>
-        <p>Faturamento</p>
-    </div>
-
-    <div class="resumo-card">
-        <span>✅</span>
-        <strong>{{ pedidos_entregues }}</strong>
-        <p>Pedidos entregues</p>
-    </div>
-
-    <div class="resumo-card">
-        <span>⏳</span>
-        <strong>{{ pedidos_pendentes }}</strong>
-        <p>Pedidos pendentes</p>
-    </div>
-
+    <div class="resumo-card"><span>🍨</span><strong>{{ produtos }}</strong><p>Produtos</p></div>
+    <div class="resumo-card"><span>👥</span><strong>{{ usuarios }}</strong><p>Usuários</p></div>
+    <div class="resumo-card"><span>📦</span><strong>{{ pedidos }}</strong><p>Pedidos</p></div>
+    <div class="resumo-card"><span>💰</span><strong>R$ {{ "%.2f"|format(faturamento) }}</strong><p>Rendimento entregue</p></div>
 </section>
 
+<section class="graficos-grid">
+    <article class="grafico-card">
+        <h2>🍨 Sorvetes mais vendidos</h2>
+        <canvas id="graficoVendas"></canvas>
+    </article>
+    <article class="grafico-card">
+        <h2>🏷️ Vendas por categoria</h2>
+        <canvas id="graficoCategorias"></canvas>
+    </article>
+    <article class="grafico-card grafico-largo">
+        <h2>💰 Rendimento financeiro por sorvete</h2>
+        <canvas id="graficoFinanceiro"></canvas>
+    </article>
+</section>
+
+<section class="admin-tabela-section">
+    <div class="admin-titulo"><span>📋</span><div><h2>Resumo</h2><p>Somente pedidos entregues entram nos gráficos financeiros.</p></div></div>
+    <div class="admin-tabela">
+        <table>
+            <thead><tr><th>Sorvete</th><th>Unidades</th><th>Rendimento</th></tr></thead>
+            <tbody>
+            {% for produto, quantidade, total in vendas_produtos %}
+                <tr>
+                    <td>{{ produto.nome }}</td>
+                    <td>{{ quantidade }}</td>
+                    <td>R$ {{ "%.2f"|format(total) }}</td>
+                </tr>
+            {% else %}
+                <tr><td colspan="3">Ainda não existem vendas entregues.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const nomes = [
+    {% for produto, quantidade, total in vendas_produtos %}"{{ produto.nome|replace('"', '\\"') }}"{% if not loop.last %},{% endif %}{% endfor %}
+];
+const quantidades = [
+    {% for produto, quantidade, total in vendas_produtos %}{{ quantidade }}{% if not loop.last %},{% endif %}{% endfor %}
+];
+const rendimentos = [
+    {% for produto, quantidade, total in vendas_produtos %}{{ "%.2f"|format(total) }}{% if not loop.last %},{% endif %}{% endfor %}
+];
+const categorias = [
+    {% for categoria, quantidade in categorias %}"{{ categoria|replace('"', '\\"') }}"{% if not loop.last %},{% endif %}{% endfor %}
+];
+const quantidadesCategorias = [
+    {% for categoria, quantidade in categorias %}{{ quantidade }}{% if not loop.last %},{% endif %}{% endfor %}
+];
+
+new Chart(document.getElementById("graficoVendas"), {
+    type: "bar",
+    data: { labels: nomes, datasets: [{ label: "Unidades vendidas", data: quantidades }] },
+    options: { responsive: true, plugins: { legend: { display: false } } }
+});
+
+new Chart(document.getElementById("graficoCategorias"), {
+    type: "doughnut",
+    data: { labels: categorias, datasets: [{ label: "Vendas", data: quantidadesCategorias }] },
+    options: { responsive: true }
+});
+
+new Chart(document.getElementById("graficoFinanceiro"), {
+    type: "bar",
+    data: { labels: nomes, datasets: [{ label: "Rendimento (R$)", data: rendimentos }] },
+    options: { responsive: true }
+});
+</script>
 {% endblock %}

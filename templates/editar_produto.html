@@ -1,27 +1,36 @@
 {% extends "base.html" %}
-
-{% block title %}Editar Produto - Administração{% endblock %}
+{% block title %}Editar Sorvete - Administração{% endblock %}
 
 {% block content %}
 
 <section class="pagina-titulo">
     <span class="tag">ADMINISTRAÇÃO</span>
-    <h1>Editar produto</h1>
-    <p>Atualize as informações do produto.</p>
+    <h1>Editar sorvete 🍨</h1>
+    <p>Atualize os dados e, se quiser, troque as imagens.</p>
 </section>
 
 <section class="admin-tabela-section">
-
-    <div class="admin-titulo">
-        <span>🍨</span>
-        <div>
-            <h2>{{ produto.nome }}</h2>
-            <p>Altere os dados abaixo e salve as mudanças.</p>
-        </div>
-    </div>
-
     <div class="formulario-box">
-        <form method="POST">
+
+        {% if produto.imagem %}
+            <label>Imagem atual do sorvete 🍨</label>
+            <img
+                class="produto-imagem imagem-edicao"
+                src="{{ url_for('static', filename=produto.imagem) }}"
+                alt="{{ produto.nome }}"
+            >
+        {% endif %}
+
+        {% if produto.icone %}
+            <label>Ícone atual da conquista 🏆</label>
+            <img
+                class="produto-imagem imagem-edicao"
+                src="{{ url_for('static', filename=produto.icone) }}"
+                alt="Ícone de {{ produto.nome }}"
+            >
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
 
             <label>Nome</label>
             <input type="text" name="nome" value="{{ produto.nome }}" required>
@@ -33,17 +42,46 @@
             <input type="text" name="categoria" value="{{ produto.categoria }}" required>
 
             <label>Preço</label>
-            <input type="number" name="preco" value="{{ produto.preco }}" step="0.01" min="0" required>
+            <input
+                type="number"
+                name="preco"
+                value="{{ "%.2f"|format(produto.preco) }}"
+                step="0.01"
+                min="0"
+                required
+            >
 
-            <button class="botao" type="submit">Salvar alterações</button>
+            <label>Trocar imagem do sorvete 🍨</label>
+            <input
+                class="input-arquivo"
+                type="file"
+                name="imagem"
+                accept="image/png,image/jpeg,image/webp,image/gif"
+            >
+
+            <small>Foto que aparece no cardápio.</small>
+
+            <label>Trocar ícone da conquista 🏆</label>
+            <input
+                class="input-arquivo"
+                type="file"
+                name="icone"
+                accept="image/png,image/jpeg,image/webp,image/gif"
+            >
+
+            <small>Desenho usado na gamificação e no perfil.</small>
+
+            <button class="botao" type="submit">
+                Salvar alterações
+            </button>
 
         </form>
 
         <a class="botao secundario" href="{{ url_for('admin_produtos') }}">
-            Voltar para produtos
+            Voltar
         </a>
-    </div>
 
+    </div>
 </section>
 
 {% endblock %}

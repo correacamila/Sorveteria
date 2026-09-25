@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Gamificação{% endblock %}
+
+{% block content %}
+
+<div class="container gamificacao">
+
+    <div class="titulo-pagina">
+        <h1>🏆 Gamificação</h1>
+        <p>Veja quem está no topo e acompanhe sua posição.</p>
+    </div>
+
+    <!-- Minha posição -->
+    <div class="minha-posicao">
+        <div class="posicao-icon">🏆</div>
+
+        <div>
+            <h2>Minha posição</h2>
+            <p>
+                Você está em
+                <strong>{{ posicao }}º lugar</strong>
+                no ranking!
+            </p>
+        </div>
+    </div>
+
+    <!-- Ranking -->
+    <div class="card-ranking">
+
+        <h2>🏆 Ranking de sorvetes</h2>
+
+        {% if ranking %}
+
+            <div class="lista-ranking">
+
+                {% for item in ranking %}
+
+                    <div class="item-ranking">
+
+                        <div class="posicao-ranking">
+                            {{ item.posicao }}º
+                        </div>
+
+                        {% if item.usuario.foto.startswith("avatares/") %}
+                            <img
+                                class="ranking-foto"
+                                src="{{ url_for('static', filename=item.usuario.foto) }}"
+                                alt="Foto de perfil"
+                            >
+                        {% else %}
+                            <img
+                                class="ranking-foto"
+                                src="{{ url_for('static', filename='avatares/' + item.usuario.foto) }}"
+                                alt="Foto de perfil"
+                            >
+                        {% endif %}
+
+                        <div class="dados-ranking">
+                            <strong class="nome-ranking">
+                                {{ item.usuario.apelido or item.usuario.nome }}
+                            </strong>
+
+                            <span class="quantidade-sorvetes">
+                                🍨 {{ item.total }} sorvetes
+                            </span>
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <p class="ranking-vazio">
+                Ainda não há compras registradas.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

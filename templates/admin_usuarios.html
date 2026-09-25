@@ -27,6 +27,7 @@
                     <th>Nº</th>
                     <th>Nome</th>
                     <th>E-mail</th>
+                    <th>Senha</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -37,19 +38,22 @@
                     <td>{{ loop.index }}</td>
                     <td>{{ usuario.nome }}</td>
                     <td>{{ usuario.email }}</td>
+                    <td class="senha-mascarada">##########</td>
                     <td class="acoes">
                         <form action="{{ url_for('tornar_adm', id=usuario.id) }}" method="POST">
                             <button class="botao pequeno" type="submit">Tornar ADM</button>
                         </form>
-
-                        <form action="{{ url_for('remover_usuario', id=usuario.id) }}" method="POST">
-                            <button class="botao pequeno" type="submit">Excluir</button>
-                        </form>
+                        <a
+                            class="botao pequeno secundario"
+                            href="{{ url_for('confirmar_remocao_usuario', id=usuario.id) }}"
+                        >
+                            Excluir
+                        </a>
                     </td>
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="4">Nenhum cliente cadastrado.</td>
+                    <td colspan="5">Nenhum cliente cadastrado.</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -75,6 +79,7 @@
                     <th>Nº</th>
                     <th>Nome</th>
                     <th>E-mail</th>
+                    <th>Senha</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -85,6 +90,7 @@
                     <td>{{ loop.index }}</td>
                     <td>{{ usuario.nome }}</td>
                     <td>{{ usuario.email }}</td>
+                    <td class="senha-mascarada">##########</td>
                     <td class="acoes">
 
                         {% if usuario.principal %}
@@ -107,7 +113,7 @@
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="4">Nenhum administrador cadastrado.</td>
+                    <td colspan="5">Nenhum administrador cadastrado.</td>
                 </tr>
                 {% endfor %}
             </tbody>

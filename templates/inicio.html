@@ -1,66 +1,57 @@
 {% extends "base.html" %}
-
 {% block title %}Início - Doce Neve{% endblock %}
-
 {% block content %}
-
 <section class="hero">
-
     <div>
         <span class="tag">FEITO PARA DEIXAR SEU DIA MAIS DOCE</span>
-
         <h1>Seu momento feliz começa com um sorvete.</h1>
-
-        <p>
-            Sabores cremosos, combinações especiais e muita alegria
-            em cada pedido.
-        </p>
-
-        <a class="botao" href="{{ url_for('cardapio') }}">
-            Ver cardápio 🍨
-        </a>
+        <p>Sabores cremosos, combinações especiais e muita alegria em cada pedido.</p>
+        <a class="botao" href="{{ url_for('cardapio') }}">Ver cardápio 🍨</a>
     </div>
-
     <div class="hero-emoji">🍦</div>
-
 </section>
+
+{% if novidade %}
+<section>
+    <div class="titulo-secao"><span>✨</span><div><h2>Novidade</h2><p>O sorvete cadastrado mais recentemente.</p></div></div>
+    <article class="card destaque">
+        {% if novidade.imagem %}
+            <img class="produto-imagem" src="{{ url_for('static', filename=novidade.imagem) }}" alt="{{ novidade.nome }}">
+        {% else %}
+            <div class="icone-sorvete">🍨</div>
+        {% endif %}
+        <div>
+            <span class="categoria">{{ novidade.categoria }}</span>
+            <h3>{{ novidade.nome }}</h3>
+            <p>{{ novidade.descricao }}</p>
+            <strong>R$ {{ "%.2f"|format(novidade.preco) }}</strong>
+            {% if session.get("usuario") %}
+                <a class="botao pequeno" href="{{ url_for('novo_pedido', produto_id=novidade.id) }}">Experimentar</a>
+            {% endif %}
+        </div>
+    </article>
+</section>
+{% endif %}
 
 <section>
-
-    <div class="titulo-secao">
-        <span>⭐</span>
-        <div>
-            <h2>Favoritos da casa</h2>
-            <p>Alguns dos nossos produtos especiais.</p>
-        </div>
-    </div>
-
+    <div class="titulo-secao"><span>⭐</span><div><h2>Favoritos da casa</h2><p>Os 3 sorvetes mais comprados.</p></div></div>
     <div class="grade">
-
-        {% for produto in produtos[:4] %}
-
+        {% for produto, quantidade in favoritos %}
         <article class="card">
-
-            <div class="icone-sorvete">🍨</div>
-
+            {% if produto.imagem %}
+                <img class="produto-imagem" src="{{ url_for('static', filename=produto.imagem) }}" alt="{{ produto.nome }}">
+            {% else %}
+                <div class="icone-sorvete">🍨</div>
+            {% endif %}
             <span class="categoria">{{ produto.categoria }}</span>
-
             <h3>{{ produto.nome }}</h3>
-
             <p>{{ produto.descricao }}</p>
-
             <strong>R$ {{ "%.2f"|format(produto.preco) }}</strong>
-
+            <small>🍨 {{ quantidade }} unidades vendidas</small>
         </article>
-
         {% else %}
-
-        <p>Nenhum produto cadastrado no momento.</p>
-
+        <div class="vazio pequeno-vazio"><div>🍦</div><h3>Ainda não temos favoritos.</h3><p>Os 3 mais comprados aparecerão aqui depois das primeiras entregas.</p></div>
         {% endfor %}
-
     </div>
-
 </section>
-
 {% endblock %}

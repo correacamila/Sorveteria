@@ -1,98 +1,58 @@
 {% extends "base.html" %}
-
 {% block title %}Produtos - Administração{% endblock %}
-
 {% block content %}
-
 <section class="pagina-titulo">
     <span class="tag">ADMINISTRAÇÃO</span>
-    <h1>Gerenciar produtos</h1>
-    <p>Adicione, edite ou remova os produtos da Doce Neve.</p>
+    <h1>Gerenciar sorvetes 🍨</h1>
+    <p>Cadastre, edite ou remova sabores do cardápio.</p>
 </section>
 
 <section class="admin-tabela-section">
-
-    <div class="admin-titulo">
-        <span>🍨</span>
-        <div>
-            <h2>Adicionar produto</h2>
-            <p>Cadastre um novo sabor no cardápio.</p>
-        </div>
-    </div>
-
+    <div class="admin-titulo"><span>➕</span><div><h2>Novo sorvete</h2><p>A imagem enviada também pode virar um ícone de perfil depois das compras.</p></div></div>
     <div class="formulario-box">
-        <form action="{{ url_for('adicionar_produto') }}" method="POST">
-
+        <form action="{{ url_for('adicionar_produto') }}" method="POST" enctype="multipart/form-data">
             <label>Nome</label>
             <input type="text" name="nome" required>
-
             <label>Descrição</label>
             <input type="text" name="descricao" required>
-
             <label>Categoria</label>
             <input type="text" name="categoria" required>
-
             <label>Preço</label>
             <input type="number" name="preco" step="0.01" min="0" required>
+            <label>Imagem do sorvete 🍨</label>
+            <input class="input-arquivo" type="file" name="imagem" accept="image/png,image/jpeg,image/webp,image/gif">
+            <small>Foto que aparecerá no cardápio.</small>
 
-            <button class="botao" type="submit">Adicionar produto</button>
-
+            <label>Ícone da conquista 🏆</label>
+            <input class="input-arquivo" type="file" name="icone" accept="image/png,image/jpeg,image/webp,image/gif">
+            <small>Desenho que será desbloqueado na gamificação.</small>
+            <button class="botao" type="submit">Adicionar sorvete 🍦</button>
         </form>
     </div>
-
 </section>
 
 <section class="admin-tabela-section">
-
-    <div class="admin-titulo">
-        <span>🍦</span>
-        <div>
-            <h2>Produtos cadastrados</h2>
-            <p>Veja e gerencie os produtos disponíveis.</p>
-        </div>
+    <div class="admin-titulo"><span>🍦</span><div><h2>Sorvetes cadastrados</h2><p>Os mais recentes aparecem primeiro.</p></div></div>
+    <div class="grade admin-produtos-grid">
+        {% for produto in produtos %}
+        <article class="card">
+            {% if produto.imagem %}
+                <img class="produto-imagem" src="{{ url_for('static', filename=produto.imagem) }}" alt="{{ produto.nome }}">
+            {% else %}
+                <div class="icone-sorvete">🍨</div>
+            {% endif %}
+            <span class="categoria">{{ produto.categoria }}</span>
+            <h3>{{ produto.nome }}</h3>
+            <p>{{ produto.descricao }}</p>
+            <strong>R$ {{ "%.2f"|format(produto.preco) }}</strong>
+            <div class="acoes-card">
+                <a class="botao pequeno" href="{{ url_for('editar_produto', id=produto.id) }}">Editar</a>
+                <a class="botao pequeno secundario" href="{{ url_for('confirmar_exclusao_produto', id=produto.id) }}">Excluir</a>
+            </div>
+        </article>
+        {% else %}
+            <p>Nenhum sorvete cadastrado.</p>
+        {% endfor %}
     </div>
-
-    <div class="admin-tabela">
-        <table>
-            <thead>
-                <tr>
-                    <th>Nº</th>
-                    <th>Nome</th>
-                    <th>Categoria</th>
-                    <th>Preço</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                {% for produto in produtos %}
-                <tr>
-                    <td>{{ loop.index }}</td>
-                    <td>{{ produto.nome }}</td>
-                    <td>{{ produto.categoria }}</td>
-                    <td>R$ {{ "%.2f"|format(produto.preco) }}</td>
-                    <td class="acoes">
-
-                        <a class="botao pequeno" href="{{ url_for('editar_produto', id=produto.id) }}">
-                            Editar
-                        </a>
-
-                        <form action="{{ url_for('remover_produto', id=produto.id) }}" method="POST">
-                            <button class="botao pequeno" type="submit">Excluir</button>
-                        </form>
-
-                    </td>
-                </tr>
-
-                {% else %}
-                <tr>
-                    <td colspan="5">Nenhum produto cadastrado.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
 </section>
-
 {% endblock %}

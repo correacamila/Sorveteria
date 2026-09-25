@@ -1,58 +1,27 @@
 {% extends "base.html" %}
-
 {% block title %}Administração - Doce Neve{% endblock %}
-
 {% block content %}
-
 <section class="admin-cabecalho">
     <span class="tag">ÁREA ADMINISTRATIVA</span>
-    <h1>Painel administrativo</h1>
-    <p>Gerencie a sorveteria por aqui.</p>
+    <h1>Painel administrativo 📊</h1>
+    <p>Gerencie os pedidos, usuários, sorvetes e relatórios da Doce Neve.</p>
+</section>
+
+<section class="resumo-grid">
+    <div class="resumo-card"><span>🍨</span><strong>{{ dados.produtos }}</strong><p>Sorvetes</p></div>
+    <div class="resumo-card"><span>👥</span><strong>{{ dados.usuarios }}</strong><p>Usuários</p></div>
+    <div class="resumo-card"><span>📦</span><strong>{{ dados.pedidos }}</strong><p>Pedidos</p></div>
+    <div class="resumo-card"><span>💰</span><strong>R$ {{ "%.2f"|format(dados.faturamento) }}</strong><p>Rendimento</p></div>
 </section>
 
 <section class="admin-gerenciamento">
-
-    <div class="admin-titulo">
-        <span>⚙️</span>
-        <div>
-            <h2>Gerenciamento</h2>
-            <p>Acesse as principais funções administrativas.</p>
-        </div>
-    </div>
-
+    <div class="admin-titulo"><span>⚙️</span><div><h2>Gerenciamento</h2><p>Acesse as funções administrativas.</p></div></div>
     <div class="admin-opcoes">
-
-        <a href="{{ url_for('admin_pedidos') }}" class="admin-opcao">
-            <span>📦</span>
-            <h3>Pedidos</h3>
-            <p>Visualize e altere o status dos pedidos.</p>
-        </a>
-
-        <a href="{{ url_for('admin_usuarios') }}" class="admin-opcao">
-            <span>👥</span>
-            <h3>Usuários</h3>
-            <p>Gerencie clientes e administradores.</p>
-        </a>
-
-        <a href="{{ url_for('admin_produtos') }}" class="admin-opcao">
-            <span>🍨</span>
-            <h3>Produtos</h3>
-            <p>Adicione, edite ou remova produtos.</p>
-        </a>
-
-        <a href="{{ url_for('admin_financeiro') }}" class="admin-opcao">
-            <span>💰</span>
-            <h3>Financeiro</h3>
-            <p>Veja o faturamento e as vendas da sorveteria.</p>
-        </a>
-        <a href="{{ url_for('relatorio') }}" class="admin-opcao">
-            <span>📊</span>
-            <h3>Relatório</h3>
-            <p>Veja um resumo dos dados da sorveteria.</p>
-        </a>
-
+        <a href="{{ url_for('admin_pedidos') }}" class="admin-opcao"><span>📦</span><h3>Pedidos</h3><p>Visualize e altere os status.</p></a>
+        <a href="{{ url_for('admin_usuarios') }}" class="admin-opcao"><span>👥</span><h3>Usuários</h3><p>Gerencie clientes e administradores.</p></a>
+        <a href="{{ url_for('admin_produtos') }}" class="admin-opcao"><span>🍨</span><h3>Sorvetes</h3><p>Cadastre, edite e remova sabores.</p></a>
+        <a href="{{ url_for('admin_financeiro') }}" class="admin-opcao"><span>💰</span><h3>Financeiro</h3><p>Veja gastos e vendas por produto.</p></a>
+        <a href="{{ url_for('relatorio') }}" class="admin-opcao"><span>📊</span><h3>Relatórios</h3><p>Veja os gráficos e indicadores.</p></a>
     </div>
-
 </section>
-
 {% endblock %}

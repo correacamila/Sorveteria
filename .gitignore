@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+doce_neve.db
+*.db

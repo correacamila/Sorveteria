@@ -1,55 +1,44 @@
-from datetime import date
+from datetime import date, datetime
+from banco import db
 
-class Usuario:
-    def __init__(self,id_usuario,nome,email,senha,apelido="",foto="avatar1.png",data_entrada=None,adm=False,principal=False):
-        self.id=id_usuario
-        self.nome=nome
-        self.email=email
-        self.senha=senha
-        self.apelido=apelido
-        self.foto="inicial_fem.png"
-        self.data_entrada=data_entrada or date.today().strftime("%d/%m/%Y")
-        self.adm=adm
-        self.principal=principal
 
-class Produto:
-    def __init__(self,id_produto,nome,descricao,categoria,preco):
-        self.id=id_produto
-        self.nome=nome
-        self.descricao=descricao
-        self.categoria=categoria
-        self.preco=preco
+class Usuario(db.Model):
+    __tablename__ = "usuarios"
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    senha = db.Column(db.String(255), nullable=False)
+    apelido = db.Column(db.String(50), default="")
+    foto = db.Column(db.String(200), default="inicial_neutro.png")
+    data_entrada = db.Column(db.Date, default=date.today)
+    adm = db.Column(db.Boolean, default=False)
+    principal = db.Column(db.Boolean, default=False)
 
-class Pedido:
-    def __init__(self,id_pedido,usuario_id,produto,quantidade):
-        self.id=id_pedido
-        self.usuario_id=usuario_id
-        self.produto=produto.nome
-        self.preco=produto.preco
-        self.quantidade=quantidade
-        self.total=produto.preco*quantidade
-        self.status="Recebido"
 
-def criar_usuario(id_usuario,nome,email,senha):
-    return {
-        "id":id_usuario,
-        "nome":nome,
-        "email":email,
-        "senha":senha,
-        "apelido":"",
-        "foto":"avatar1.png",
-        "data_entrada":date.today().strftime("%d/%m/%Y"),
-        "adm":False,
-        "principal":False
-    }
+class Produto(db.Model):
+    __tablename__ = "produtos"
 
-def criar_pedido(id_pedido,usuario_id,produto,quantidade):
-    return {
-        "id":id_pedido,
-        "usuario_id":usuario_id,
-        "produto":produto["nome"],
-        "preco":produto["preco"],
-        "quantidade":quantidade,
-        "total":produto["preco"]*quantidade,
-        "status":"Recebido"
-    }
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    descricao = db.Column(db.Text)
+    categoria = db.Column(db.String(50))
+    preco = db.Column(db.Float, nullable=False)
+
+    # Foto do sorvete no cardápio
+    imagem = db.Column(db.String(200), default="")
+
+    # Desenho usado como conquista/avatar
+    icone = db.Column(db.String(200), default="")
+
+
+class Pedido(db.Model):
+    __tablename__ = "pedidos"
+    id = db.Column(db.Integer, primary_key=True)
+    usuario_id = db.Column(db.Integer, nullable=False)
+    produto_id = db.Column(db.Integer)
+    produto = db.Column(db.String(100), nullable=False)
+    preco = db.Column(db.Float, nullable=False)
+    quantidade = db.Column(db.Integer, nullable=False)
+    total = db.Column(db.Float, nullable=False)
+    status = db.Column(db.String(30), default="Recebido")
+    data_pedido = db.Column(db.DateTime, default=datetime.now)

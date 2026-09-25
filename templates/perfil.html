@@ -1,112 +1,153 @@
 {% extends "base.html" %}
 {% block title %}Meu Perfil - Doce Neve{% endblock %}
-
 {% block content %}
+<section class="pagina-titulo perfil-titulo">
+    <div>
+        <span class="tag">MEU PERFIL</span>
+        <h1>Minha conta 🍦</h1>
+        <p>Veja seus dados e desbloqueie novos ícones conforme compra seus sabores favoritos.</p>
+    </div>
 
-<section class="pagina-titulo">
-    <span class="tag">MEU PERFIL</span>
-    <h1>Minha conta 🍦</h1>
-    <p>Confira suas informações na Doce Neve.</p>
+    <a class="botao" href="{{ url_for('pedidos') }}">
+        🍨 Meus pedidos
+    </a>
 </section>
 
-<section class="perfil">
-
-    <div class="perfil-foto">
-        <img src="{{ url_for('static', filename='avatares/' + usuario.foto) }}" alt="Foto de perfil">
+<section class="perfil perfil-largo">
+    <div class="perfil-lado">
+        {% if usuario.foto.startswith("avatares/") %}
+            <img class="foto-perfil"
+                src="{{ url_for('static', filename=usuario.foto) }}"
+                alt="Foto de perfil">
+        {% elif usuario.foto.startswith("uploads/") %}
+            <img class="foto-perfil"
+                src="{{ url_for('static', filename=usuario.foto) }}"
+                alt="Foto de perfil">
+        {% else %}
+            <img class="foto-perfil"
+                src="{{ url_for('static', filename='avatares/' + usuario.foto) }}"
+                alt="Foto de perfil">
+        {% endif %}
+        <button class="botao" type="button" onclick="abrirAvatares()">Alterar imagem ✨</button>
     </div>
 
     <div class="perfil-info">
         <span class="categoria">SEUS DADOS</span>
         <h2>{{ usuario.nome }}</h2>
-        <p><strong>Apelido:</strong> {{ usuario.apelido }}</p>
+        <p><strong>Apelido:</strong> {{ usuario.apelido or "Não informado" }}</p>
         <p><strong>E-mail:</strong> {{ usuario.email }}</p>
-        <p><strong>Entrou em:</strong> {{ usuario.data_entrada }}</p>
-
-        {% if usuario.adm %}
-            <p><strong>Tipo de conta:</strong> Administrador 👑</p>
-        {% else %}
-            <p><strong>Tipo de conta:</strong> Usuário 🍨</p>
-        {% endif %}
+        <p><strong>Data de cadastro:</strong> {{ usuario.data_entrada.strftime("%d/%m/%Y") }}</p>
+        <p><strong>Tipo de conta:</strong> {{ "Administrador 👑" if usuario.adm else "Usuário 🍨" }}</p>
+        <div class="mini-estatistica">
+            <strong>{{ desbloqueados|length }}</strong>
+            <span>ícones de sorvete desbloqueados</span>
+        </div>
     </div>
-
 </section>
 
 <section class="avatar-atual">
-    <span class="categoria">SEU AVATAR</span>
-
-    <div class="avatar-preview">
-        <img src="{{ url_for('static', filename='avatares/' + usuario.foto) }}" alt="Avatar atual">
+    <span class="categoria">GAMIFICAÇÃO</span>
+    <h2>Seus ícones desbloqueados 🍨</h2>
+    <p>Você desbloqueia o ícone de um sabor ao comprar <strong>{{ limite }}</strong> unidades dele em pedidos entregues.</p>
+    <div class="contador-conquistas">
+        <strong>{{ desbloqueados|length }} / {{ produtos|length }}</strong>
+        <span>conquistas desbloqueadas</span>
     </div>
+    <div class="avatares">
+        {% for produto in produtos %}
+            {% if produto in desbloqueados %}
 
-    <button class="botao" type="button" onclick="abrirAvatares()">
-        Alterar avatar ✨
-    </button>
+                <div class="avatar-opcao disponivel">
+                    {% if produto.icone %}
+                        <img src="{{ url_for('static', filename=produto.icone) }}" alt="{{ produto.nome }}">
+                    {% else %}
+                        <div class="icone-avatar">🍨</div>
+                    {% endif %}
+
+                    <span>{{ produto.nome }}</span>
+                </div>
+
+            {% else %}
+
+                <div class="avatar-opcao bloqueado">
+                    <div class="icone-bloqueado">
+                        🔒
+                    </div>
+
+                    <span>{{ produto.nome }}</span>
+                </div>
+
+            {% endif %}
+        {% endfor %}
+    </div>
 </section>
 
 <div id="janela-avatares" class="janela-fundo">
+    {% if usuario.adm %}
+        {% set iniciais = [
+            ("admin_fem.png", "Administradora"),
+            ("admin_mas.png", "Administrador"),
+            ("admin_neutro.png", "Administrador neutro")
+        ] %}
+    {% else %}
+        {% set iniciais = [
+            ("inicial_fem.png", "Feminino"),
+            ("inicial_mas.png", "Masculino"),
+            ("inicial_neutro.png", "Neutro")
+        ] %}
+    {% endif %}
     <div class="janela-avatares">
-
         <button class="fechar" type="button" onclick="fecharAvatares()">×</button>
-
         <span class="categoria">PERSONALIZE SEU PERFIL</span>
-        <h2>Escolha seu avatar 🍦</h2>
+        <h2>Escolha uma imagem 🍦</h2>
 
         <form method="POST">
+
             <div class="avatares">
 
-                {% if usuario.adm %}
-
-                    {% set avatares = [
-                        ("admin_fem.png", "Administradora"),
-                        ("admin_mas.png", "Administrador"),
-                        ("admin_neutro.png", "Administrador neutro")
-                    ] %}
-
-                {% else %}
-
-                    {% set avatares = [
-                        ("inicial_fem.png", "Feminino"),
-                        ("inicial_mas.png", "Masculino"),
-                        ("inicial_neutro.png", "Neutro"),
-                        ("morango.png", "Morango"),
-                        ("chocolate.png", "Chocolate"),
-                        ("ninho_nutella.png", "Ninho com Nutella"),
-                        ("baunilha.png", "Baunilha"),
-                        ("maracuja.png", "Maracujá"),
-                        ("chocomenta.png", "Chocomenta")
-                    ] %}
-
-                {% endif %}
-
-                {% for arquivo, nome in avatares %}
+                {% for arquivo, nome in iniciais %}
                 <label class="avatar-opcao">
-                    <input type="radio" name="foto" value="{{ arquivo }}" {% if usuario.foto == arquivo %}checked{% endif %}>
-                    <img src="{{ url_for('static', filename='avatares/' + arquivo) }}" alt="{{ nome }}">
+                    <input type="radio" name="foto" value="{{ arquivo }}">
+
+                    <img
+                        src="{{ url_for('static', filename='avatares/' + arquivo) }}"
+                        alt="{{ nome }}"
+                    >
+
                     <span>{{ nome }}</span>
                 </label>
                 {% endfor %}
 
+                {% for produto in desbloqueados %}
+                    <div class="avatar-opcao disponivel">
+                        {% if produto.icone %}
+                            <img
+                                src="{{ url_for('static', filename=produto.icone) }}"
+                                alt="{{ produto.nome }}"
+                            >
+
+                            <small>{{ produto.icone }}</small>
+                        {% else %}
+                            <div class="icone-avatar">🏆</div>
+                            <small>Sem ícone cadastrado</small>
+                        {% endif %}
+
+                        <span>{{ produto.nome }}</span>
+                    </div>
+                {% endfor %}
+
             </div>
 
-            <button class="botao" type="submit">Salvar avatar 🍦</button>
-        </form>
+            <button class="botao" type="submit">
+                Salvar imagem 🍦
+            </button>
 
+        </form>
     </div>
 </div>
 
 <script>
-function abrirAvatares(){
-    document.getElementById("janela-avatares").style.display="flex";
-}
-
-function fecharAvatares(){
-    document.getElementById("janela-avatares").style.display="none";
-}
+function abrirAvatares(){ document.getElementById("janela-avatares").style.display = "flex"; }
+function fecharAvatares(){ document.getElementById("janela-avatares").style.display = "none"; }
 </script>
-
-<section class="perfil-acoes">
-    <a class="botao" href="{{ url_for('pedidos') }}">Meus pedidos 🍨</a>
-    <a class="botao secundario" href="{{ url_for('cardapio') }}">Ver cardápio 🍦</a>
-</section>
-
 {% endblock %}
