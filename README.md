@@ -1,37 +1,31 @@
-# 🍦 Doce Neve — Sorveteria
+# 🍦 Doce Neve
 
-Projeto escolar feito com Python, Flask, HTML e CSS.
+Sistema web para gerenciamento de uma sorveteria, desenvolvido com Python e Flask.
 
-## Estrutura
+## ✨ Funcionalidades
+- Cadastro e login de usuários
+- Cardápio com categorias e imagens
+- Realização e acompanhamento de pedidos
+- Perfil com fotos e conquistas
+- Ranking de usuários
+- Dashboard com estatísticas
+- Área administrativa
+- Cadastro, edição e exclusão de sorvetes
+- Gerenciamento de usuários
+- Confirmações para ações importantes
 
-- `app.py` → controla as rotas e liga as páginas aos dados.
-- `banco.py` → lê e salva os dados no `dados.json`.
-- `modelos.py` → cria usuários e pedidos.
-- `dados.json` → guarda os dados.
-- `templates/` → páginas HTML.
-- `static/` → arquivo CSS.
-- `requirements.txt` → dependência do Flask.
+## 🛠️ Tecnologias
+- Python
+- Flask
+- Flask-SQLAlchemy
+- SQLite
+- HTML
+- CSS
+- JavaScript
 
-## Como executar no Windows CMD
-
-```text
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-set FLASK_APP=app.py
-flask run --debug
+## ▶️ Como executar
+```bash
+python app.py
 ```
 
-Depois, abra:
-
-`http://127.0.0.1:5000`
-
-## Usuário inicial
-
-E-mail: `correa@gmail.com`
-
-Senha: `1234567890`
-
-## Observação
-
-O `app.py` foi mantido sem alterações, como solicitado.
+Depois, acesse `http://127.0.0.1:5000` no navegador.
